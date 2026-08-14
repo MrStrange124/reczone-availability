@@ -3,57 +3,82 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Court sheet — RecZone availability</title>
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#e9eae3">
+  <title>Court sheet — when the courts are open</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-  <div class="frame">
-    <header class="mast">
-      <p class="eyebrow">BMC RecZone · general slots · read only</p>
-      <div class="mast-row">
-        <h1>Court sheet</h1>
-        <p class="lede">Days across, courts down, hours as marks on the service line. RecZone only sells about a week ahead.</p>
+  <div class="page">
+
+    <header class="masthead">
+      <div class="nameplate">
+        <span class="mark">Court sheet</span>
+        <span class="venue" id="venue">Reading RecZone…</span>
       </div>
-      <form id="filters" class="filters">
-        <label>
-          <span>Complex</span>
-          <select id="complex" name="complex"></select>
-        </label>
-        <label>
-          <span>Sport</span>
-          <select id="facility" name="facility"></select>
-        </label>
-        <label>
-          <span>From</span>
-          <input id="start" name="start" type="date" required>
-        </label>
-        <label>
-          <span>To</span>
-          <input id="end" name="end" type="date" required>
-        </label>
-        <button type="submit" class="check">Check the sheet</button>
-      </form>
-      <fieldset class="courts" id="court-field">
-        <legend>Courts</legend>
-        <div id="court-list" class="court-list"></div>
-      </fieldset>
-      <div class="meta-row">
-        <ul class="legend" aria-label="Slot status">
-          <li><i class="mark free"></i> Free to book</li>
-          <li><i class="mark reserved"></i> Reserved</li>
-          <li><i class="mark busy"></i> Held by someone</li>
-          <li><i class="mark booked"></i> Booked</li>
-          <li><i class="mark closed"></i> Closed</li>
-        </ul>
-        <p id="tally" class="tally" hidden></p>
-        <a id="book-link" class="book" href="https://reczone.mcgm.gov.in/sports-complex/book-your-sport?complex=2&type=1" target="_blank" rel="noopener">Book on RecZone</a>
-      </div>
+      <p class="thesis" id="thesis">Checking what is open.</p>
     </header>
-    <p id="banner" class="banner" hidden></p>
-    <div id="sheet-wrap" class="sheet-wrap" hidden></div>
+
+    <form class="controls" id="filters">
+      <label class="field">
+        <span class="field-label">Venue</span>
+        <select id="complex" name="complex"></select>
+      </label>
+      <label class="field">
+        <span class="field-label">Sport</span>
+        <select id="facility" name="facility"></select>
+      </label>
+      <label class="field field-date">
+        <span class="field-label">From</span>
+        <input id="start" name="start" type="date" required>
+      </label>
+      <label class="field field-date">
+        <span class="field-label">To</span>
+        <input id="end" name="end" type="date" required>
+      </label>
+      <button type="submit" class="go" id="go">Refresh</button>
+      <details class="courtpick">
+        <summary id="courtpick-summary">All courts</summary>
+        <div class="courtpick-body">
+          <div id="court-list" class="court-list"></div>
+          <button type="button" class="courtpick-all" id="court-all">Select all</button>
+        </div>
+      </details>
+    </form>
+
+    <p class="banner" id="banner" hidden></p>
+
+    <section class="block" id="tape-block" hidden>
+      <div class="block-head">
+        <h2 class="block-title">The week</h2>
+        <p class="block-note">Each bar is one hour. Its height is how many courts are open.</p>
+      </div>
+      <div class="tape-scroll">
+        <table class="tape" id="tape"></table>
+      </div>
+      <ul class="key">
+        <li><i class="sw sw-open"></i>Open</li>
+        <li><i class="sw sw-taken"></i>Taken</li>
+        <li><i class="sw sw-none"></i>Not on sale</li>
+      </ul>
+    </section>
+
+    <section class="block" id="windows-block" hidden>
+      <div class="block-head">
+        <h2 class="block-title">Open windows</h2>
+        <p class="block-note" id="windows-note"></p>
+      </div>
+      <div id="windows"></div>
+    </section>
+
+    <footer class="foot">
+      <a id="book-link" class="book" href="https://reczone.mcgm.gov.in/sports-complex/book-your-sport?complex=2&amp;type=1" target="_blank" rel="noopener">Book on RecZone</a>
+      <p class="fine">Read only. This page never signs in, holds, or books a slot. Prices are per hour, per court, as RecZone reports them.</p>
+    </footer>
+
   </div>
   <script src="/static/app.js" type="module"></script>
 </body>
