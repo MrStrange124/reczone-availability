@@ -442,15 +442,18 @@ body {
 
 /* ---------- open windows: the call sheet ---------- */
 
+/* The ink rule alone does not read as a new day: pressed tight against rows above
+   and below it looks like one more divider. The break is mostly the space around
+   it, and mobile rows are tall enough to need a lot of it. */
 .daygroup { border-top: 2px solid var(--ink); }
-.daygroup + .daygroup { margin-top: 20px; }
+.daygroup + .daygroup { margin-top: 38px; }
 
 .dayhead {
   display: flex;
   align-items: baseline;
   gap: 9px;
   margin: 0;
-  padding: 9px 0 4px;
+  padding: 14px 0 9px;
   font-weight: 400;
 }
 
@@ -463,7 +466,7 @@ body {
 }
 
 .dayhead .d-num {
-  font-size: 22px;
+  font-size: 27px;
   font-weight: 800;
   font-stretch: 108%;
   line-height: 1;
@@ -561,6 +564,11 @@ body {
 }
 
 @media (min-width: 720px) {
+  /* Desktop rows are half the height, so the same break needs less room. */
+  .daygroup + .daygroup { margin-top: 26px; }
+  .dayhead { padding: 10px 0 5px; }
+  .dayhead .d-num { font-size: 23px; }
+
   /* The floor is set above the widest hourly label ("11 AM – 12 PM", 236px), so
      every row lines its chips up on the same edge. max-content is the safety net:
      a longer label than that grows its own track instead of running underneath the
