@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Court sheet — RecZone availability</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="frame">
+    <header class="mast">
+      <p class="eyebrow">BMC RecZone · general slots · read only</p>
+      <div class="mast-row">
+        <h1>Court sheet</h1>
+        <p class="lede">Days across, courts down, hours as marks on the service line. RecZone only sells about a week ahead.</p>
+      </div>
+      <form id="filters" class="filters">
+        <label>
+          <span>Complex</span>
+          <select id="complex" name="complex"></select>
+        </label>
+        <label>
+          <span>Sport</span>
+          <select id="facility" name="facility"></select>
+        </label>
+        <label>
+          <span>From</span>
+          <input id="start" name="start" type="date" required>
+        </label>
+        <label>
+          <span>To</span>
+          <input id="end" name="end" type="date" required>
+        </label>
+        <button type="submit" class="check">Check the sheet</button>
+      </form>
+      <fieldset class="courts" id="court-field">
+        <legend>Courts</legend>
+        <div id="court-list" class="court-list"></div>
+      </fieldset>
+      <div class="meta-row">
+        <ul class="legend" aria-label="Slot status">
+          <li><i class="mark free"></i> Free to book</li>
+          <li><i class="mark reserved"></i> Reserved</li>
+          <li><i class="mark busy"></i> Held by someone</li>
+          <li><i class="mark booked"></i> Booked</li>
+          <li><i class="mark closed"></i> Closed</li>
+        </ul>
+        <p id="tally" class="tally" hidden></p>
+        <a id="book-link" class="book" href="https://reczone.mcgm.gov.in/sports-complex/book-your-sport?complex=2&type=1" target="_blank" rel="noopener">Book on RecZone</a>
+      </div>
+    </header>
+    <p id="banner" class="banner" hidden></p>
+    <div id="sheet-wrap" class="sheet-wrap" hidden></div>
+  </div>
+  <script src="/static/app.js" type="module"></script>
+</body>
+</html>
