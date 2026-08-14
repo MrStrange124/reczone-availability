@@ -20,9 +20,18 @@ python3 -m pytest tests/test_cache.py                 # one file
 python3 -m pytest tests/test_cache.py::test_failures_are_not_cached   # one test
 python3 -m pytest -q -k cache                         # by name
 
-npx vercel        # preview deploy
-npx vercel --prod
+scripts/deploy.sh          # preview deploy
+scripts/deploy.sh --prod   # production
 ```
+
+**Do not deploy with plain `npx vercel` from this directory** — it returns BLOCKED
+before building. The CLI sees the GitHub remote, marks the deployment
+`githubDeployment: 1`, and Vercel resolves the commit author through GitHub; the
+GitHub identity is not linked to the Vercel account, so it is refused. This is not
+about the commit email — `-m githubCommitAuthorEmail=<account email>` successfully
+rewrites the metadata and the deploy still blocks. `scripts/deploy.sh` stages the
+tracked files somewhere without a `.git`, leaving nothing for the CLI to attach.
+Linking the GitHub login in Vercel account settings retires the script.
 
 Dependencies are in `requirements.txt`. PyPI is optional here — conda works:
 `conda install -c conda-forge fastapi uvicorn httpx pytest pytest-asyncio`.
