@@ -136,15 +136,17 @@ function analyse(grid) {
 
     const cells = hours.map((hour, index) => {
       const openCourts = [];
+      const onSale = [];
       const costs = [];
       const taken = { booked: 0, busy: 0, reserved: 0 };
-      let total = 0;
 
       for (const entry of slotsByCourt) {
         if (entry.closed) continue;
         const cell = entry.bySlot.get(hour);
         if (!cell) continue;
-        total += 1;
+        /* Courts keep different hours: only some sell 3-9pm, so this is the count
+           the "N of M" is against, and M is not the venue's court count. */
+        onSale.push(entry.court);
         if (cell.status === "free") {
           openCourts.push(entry.court);
           costs.push(cell.cost);
@@ -153,7 +155,16 @@ function analyse(grid) {
         }
       }
 
-      return { hour, index, total, open: openCourts.length, openCourts, costs, taken };
+      return {
+        hour,
+        index,
+        total: onSale.length,
+        open: openCourts.length,
+        openCourts,
+        onSale,
+        costs,
+        taken,
+      };
     });
 
     return {
@@ -300,6 +311,12 @@ function describe(day, cell) {
 
 /* ---------- open windows ---------- */
 
+/* A court has three states at a given hour, not two. Drawing "not sold" the same as
+   "taken" is what let a row read "5 of 5 courts" beside two courts that looked
+   booked -- they were never on sale. */
+const CHIP_CLASS = { open: "c on", taken: "c", off: "c off" };
+const CHIP_WORDS = { open: "open", taken: "taken", off: "not sold this hour" };
+
 function renderWindows(model) {
   windowsList.replaceChildren();
 
@@ -356,9 +373,15 @@ function renderWindows(model) {
 
       const strip = el("ol", "w-courts");
       const openIds = new Set(cell.openCourts.map((court) => court.id));
+      const onSaleIds = new Set(cell.onSale.map((court) => court.id));
       for (const court of model.courts) {
-        const chip = el("li", openIds.has(court.id) ? "c on" : "c", courtChip(court.name));
-        chip.title = `${court.name} — ${openIds.has(court.id) ? "open" : "taken"}`;
+        const state = openIds.has(court.id)
+          ? "open"
+          : onSaleIds.has(court.id)
+            ? "taken"
+            : "off";
+        const chip = el("li", CHIP_CLASS[state], courtChip(court.name));
+        chip.title = `${court.name} — ${CHIP_WORDS[state]}`;
         strip.append(chip);
       }
       strip.append(el("li", "c-label", `${cell.open} of ${cell.total} courts`));

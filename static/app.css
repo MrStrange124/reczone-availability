@@ -553,6 +553,16 @@ body {
   color: var(--limewash-2);
 }
 
+/* Not sold at this hour. --paint means open and --maple means taken, so an absent
+   court gets neither: no fill, just an outline, so it reads as a gap in the row
+   rather than as one more court somebody already has. */
+.w-courts .c.off {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--maple);
+  color: var(--maple-deep);
+  font-weight: 600;
+}
+
 .w-courts .c-label {
   margin-left: 6px;
   font-size: 10px;
