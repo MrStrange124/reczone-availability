@@ -1,6 +1,8 @@
 # RecZone court sheet
 
-Local, read-only availability viewer for [BMC RecZone](https://reczone.mcgm.gov.in/sports-complex/book-your-sport?complex=2&type=1). It answers one question — when can I actually play this week? — and does not log in, lock, or book.
+Read-only availability viewer for [BMC RecZone](https://reczone.mcgm.gov.in/sports-complex/book-your-sport?complex=2&type=1). It answers one question — when can I actually play this week? — and does not log in, lock, or book.
+
+Live at **[reczone-availability.vercel.app](https://reczone-availability.vercel.app)**.
 
 The page reads as two views of the same data:
 
@@ -38,6 +40,8 @@ python3 -m pytest
 ```
 
 ## Deploy (Vercel)
+
+Production is <https://reczone-availability.vercel.app>, served from `bom1`.
 
 ```bash
 scripts/deploy.sh          # preview
